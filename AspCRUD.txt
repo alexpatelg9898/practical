@@ -1,0 +1,73 @@
+Imports System.Data.OleDb
+
+Partial Class Stud
+    Inherits System.Web.UI.Page
+    Dim cn As New OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\BCA\Practice\ASP.NET\student\student\student.accdb")
+
+    Protected Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Try
+            Dim str As String
+            Dim ans As Integer
+            str = "Insert into stud values(" & txtRollno.Text & " , ' " & txtName.Text & " ' , ' " & txtStream.Text & " ')"
+            cn.Open()
+            Dim cmd As New OleDbCommand(str, cn)
+            ans = cmd.ExecuteNonQuery
+            MsgBox("Data Inserted Successfully: " & ans)
+            GridView1.DataBind()
+            cn.Close()
+        Catch ex As Exception
+            MsgBox("Error" & ex.ToString)
+        End Try
+    End Sub
+
+    Protected Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Try
+            Dim str As String
+            Dim ans As Integer
+            str = "Update stud set name=' " & txtName.Text & " ', stream=' " & txtStream.Text & " ' where rollno=" & txtRollno.Text & " "
+            cn.Open()
+            Dim cmd As New OleDbCommand(str, cn)
+            ans = cmd.ExecuteNonQuery
+            MsgBox("Updated Successfully: " & ans)
+            GridView1.DataBind()
+            cn.Close()
+        Catch ex As Exception
+            MsgBox("Error" & ex.ToString)
+        End Try
+    End Sub
+
+    Protected Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Try
+            Dim str As String
+            Dim ans As Integer
+            str = "Delete from stud where rollno=" & txtRollno.Text & " "
+            cn.Open()
+            Dim cmd As New OleDbCommand(str, cn)
+            ans = cmd.ExecuteNonQuery
+            MsgBox("Deleted Successfully" & ans)
+            GridView1.DataBind()
+            cn.Close()
+        Catch ex As Exception
+            MsgBox("Error" & ex.ToString)
+        End Try
+    End Sub
+
+    Protected Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Try
+            Dim str As String
+            str = "Select * from stud where rollno=" & txtRollno.Text & ""
+            cn.Open()
+            Dim cmd As New OleDbCommand(str, cn)
+            Dim dr As OleDbDataReader
+            dr = cmd.ExecuteReader
+            While dr.Read
+                txtName.Text = dr.Item(1).ToString
+                txtStream.Text = dr.Item(2).ToString
+            End While
+            GridView1.DataBind()
+            cn.Close()
+        Catch ex As Exception
+            MsgBox("Error" & ex.ToString)
+        End Try
+    End Sub
+End Class

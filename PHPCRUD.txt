@@ -1,0 +1,116 @@
+<?php
+	$servername="localhost";
+	$username="root";
+	$password="";
+	$dbname="vs";
+	$link=mysqli_connect($servername,$username,$password,$dbname);                                             
+	$con=mysqli_select_db($link,$dbname);
+
+	if($con)
+	{
+		echo("connection ok");
+	}
+	else
+	{
+		die("connection failed because".mysqli_connect_error());         
+	}
+?>
+
+<html>
+
+<head>
+	<title>database operation</title>
+</head>
+
+<body>
+	<form name="form1" action="" method="POST">
+		<table>
+			<tr>
+				<td>enter name</td>
+				<td><input type="text" name="username"></td>
+			</tr>
+			<tr>
+				<td>enter email</td>
+				<td><input type="email" name="email"></td>
+			</tr>
+			<tr>
+				<td>enter roll no</td>
+				<td><input type="text" name="rollno"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" name="submit1" value="insert">
+					<input type="submit" name="submit2" value="delete">
+					<input type="submit" name="submit3" value="update">
+					<input type="submit" name="submit4" value="display">
+					<input type="submit" name="submit5" value="search">
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+
+</html>
+
+<?php
+
+if(isset($_POST["submit1"]))
+{
+	mysqli_query($link,"insert into aat values('$_POST[username]','$_POST[email]','$_POST[rollno]')");
+	echo"record insert successfully";
+}
+
+if(isset($_POST["submit2"]))
+{
+	mysqli_query($link,"delete from aat where rollno='$_POST[rollno]'");
+	echo"record delete successfully";
+}
+
+if(isset($_POST["submit3"]))
+{
+	mysqli_query($link,"update aat set username='$_POST[username]',email='$_POST[email]' where rollno='$_POST[rollno]'");
+	echo"record update successfully";
+}
+
+if(isset($_POST["submit4"]))
+{
+	$res=mysqli_query($link,"select*from aat");
+	echo"<table border=1>";
+	echo"<tr>";
+	echo"<th>"; echo"username"; echo"</th>";
+	echo"<th>"; echo"email"; echo"</th>";
+	echo"<th>"; echo"rollno"; echo"</th>";
+	
+	echo"</tr>";
+while($row=mysqli_fetch_array($res))
+{
+    echo"<tr>";
+	echo"<td>"; echo $row["username"]; echo"</td>";
+	echo"<td>"; echo $row["email"]; echo"</td>";
+	echo"<td>"; echo $row["rollno"]; echo"</td>";
+    echo"</tr>";
+}	
+	echo"</table>";
+}
+if(isset($_POST["submit5"]))
+{
+	$res=mysqli_query($link,"select*from aat where rollno='$_POST[rollno]'");
+	echo"<table border=1>";
+	echo"<tr>";
+	echo"<th>"; echo"username"; echo"</th>";
+	echo"<th>"; echo"email"; echo"</th>";
+	echo"<th>"; echo"rollno"; echo"</th>";
+	
+	echo"</tr>";
+while($row=mysqli_fetch_array($res))
+{
+    echo"<tr>";
+	echo"<td>"; echo $row["username"]; echo"</td>";
+	echo"<td>"; echo $row["email"]; echo"</td>";
+	echo"<td>"; echo $row["rollno"]; echo"</td>";
+    echo"</tr>";
+}	
+	echo"</table>";
+}
+
+?>
